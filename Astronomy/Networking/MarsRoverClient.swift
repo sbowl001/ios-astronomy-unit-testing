@@ -25,6 +25,7 @@ class MarsRoverClient {
                 completion(nil, error)
                 return
             }
+            self.marsRover = rover
             completion(rover, nil)
         }
     }
@@ -96,5 +97,6 @@ class MarsRoverClient {
     }
     
     let networkLoader: NetworkDataLoader
+    var marsRover: MarsRover? 
     
 }

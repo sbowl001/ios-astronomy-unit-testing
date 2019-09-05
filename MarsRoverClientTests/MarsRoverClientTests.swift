@@ -7,27 +7,25 @@
 //
 
 import XCTest
+@testable import Astronomy
 
 class MarsRoverClientTests: XCTestCase {
 
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func fetchMarsRoverTest(){
+        let mock = MockDataLoader()
+        mock.data = validRoverJSON
+        let resultsExpectation = expectation(description: "Wait for results")
+        
+        let controller = MarsRoverClient(networkLoader: mock)
+        controller.fetchMarsRover(named: "Curiosity") { (data, error) in
+            resultsExpectation.fulfill()
         }
+        wait(for: [resultsExpectation], timeout: 2)
+        XCTAssertEqual("Curiosity", controller.marsRover?.name)
+        XCTAssertNotNil(controller.marsRover)
+    }
+    func fetchPhotosTest(){
+    
     }
 
 }
