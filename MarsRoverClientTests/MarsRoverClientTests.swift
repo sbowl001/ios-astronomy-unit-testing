@@ -11,7 +11,7 @@ import XCTest
 
 class MarsRoverClientTests: XCTestCase {
 
-    func fetchMarsRoverTest(){
+func testfetchMarsRover(){
         let mock = MockDataLoader()
         mock.data = validRoverJSON
         let resultsExpectation = expectation(description: "Wait for results")
@@ -24,8 +24,30 @@ class MarsRoverClientTests: XCTestCase {
         XCTAssertEqual("Curiosity", controller.marsRover?.name)
         XCTAssertNotNil(controller.marsRover)
     }
-    func fetchPhotosTest(){
     
+func testfetchPhotos(){
+     let mock = MockDataLoader()
+        mock.data = validSol1JSON
+        let resultsExpectation = expectation(description: "wait for photos")
+        let controller = MarsRoverClient(networkLoader: mock)
+        
+        let dictionary = try? MarsPhotoReference.jsonDecoder.decode([String: MarsRover].self, from: validRoverJSON)
+        guard let marsRover = dictionary?["photo_manifest"] else {
+            XCTFail()
+            return
+        }
+        
+        controller.fetchPhotos(from: marsRover, onSol: 1) { (marsPhotoReferences, error) in
+            resultsExpectation.fulfill()
+        }
+        wait(for: [resultsExpectation], timeout: 2)
+        XCTAssertNotNil(controller.marsPhotoReferences)
     }
 
+    func testThatNothing() {
+        XCTAssertTrue(true, "True should be true")
+    }
+    
+    
+    
 }

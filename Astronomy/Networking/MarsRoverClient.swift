@@ -97,6 +97,8 @@ class MarsRoverClient {
     }
     
     let networkLoader: NetworkDataLoader
-    var marsRover: MarsRover? 
+    var marsRover: MarsRover?
+    var marsPhotoReferences: [MarsPhotoReference]?
+    var error: Error?
     
 }
